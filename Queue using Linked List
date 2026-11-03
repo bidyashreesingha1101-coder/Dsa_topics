@@ -1,0 +1,62 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int token;
+    struct Node* next;
+};
+
+struct Node *front = NULL, *rear = NULL;
+
+void enqueue(int token) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->token = token;
+    newNode->next = NULL;
+    if (rear == NULL) {
+        front = rear = newNode;
+        return;
+    }
+    rear->next = newNode;
+    rear = newNode;
+}
+
+int dequeue() {
+    if (front == NULL) {
+        printf("Queue Underflow\n");
+        return -1;
+    }
+    struct Node* temp = front;
+    int token = temp->token;
+    front = front->next;
+    if (front == NULL) rear = NULL;
+    free(temp);
+    return token;
+}
+
+void printQueue() {
+    struct Node* temp = front;
+    printf("Tokens still waiting: ");
+    while (temp != NULL) {
+        printf("%d ", temp->token);
+        temp = temp->next;
+    }
+    printf("\n");
+}
+
+int main() {
+    // Add five token numbers
+    enqueue(501);
+    enqueue(502);
+    enqueue(503);
+    enqueue(504);
+    enqueue(505);
+
+    // Serve two customers and print their tokens
+    printf("Served token: %d\n", dequeue());
+    printf("Served token: %d\n", dequeue());
+
+    // Print tokens still waiting
+    printQueue();
+
+    return 0;
+}
