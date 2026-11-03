@@ -1,0 +1,76 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int page_no;
+    struct Node* prev;
+    struct Node* next;
+};
+
+struct Node* head = NULL;
+struct Node* tail = NULL;
+
+void insertEnd(int page) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->page_no = page;
+    newNode->next = NULL;
+    newNode->prev = tail;
+
+    if (head == NULL) {
+        head = tail = newNode;
+    } else {
+        tail->next = newNode;
+        tail = newNode;
+    }
+}
+
+void deleteFirst() {
+    if (head == NULL) return;
+
+    struct Node* temp = head;
+    if (head == tail) {
+        head = tail = NULL;
+    } else {
+        head = head->next;
+        head->prev = NULL;
+    }
+    free(temp);
+}
+
+void printForward() {
+    struct Node* temp = head;
+    printf("Forward (head to tail): ");
+    while (temp != NULL) {
+        printf("%d ", temp->page_no);
+        temp = temp->next;
+    }
+    printf("\n");
+}
+
+void printBackward() {
+    struct Node* temp = tail;
+    printf("Backward (tail to head): ");
+    while (temp != NULL) {
+        printf("%d ", temp->page_no);
+        temp = temp->prev;
+    }
+    printf("\n");
+}
+
+int main() {
+    // Insert five page numbers at the end
+    insertEnd(10);
+    insertEnd(20);
+    insertEnd(30);
+    insertEnd(40);
+    insertEnd(50);
+
+    // Delete the first page
+    deleteFirst();
+
+    // Print list forward and backward
+    printForward();
+    printBackward();
+
+    return 0;
+}
