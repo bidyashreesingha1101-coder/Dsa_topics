@@ -1,0 +1,55 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int book_id;
+    struct Node* next;
+};
+
+struct Node* top = NULL;
+
+void push(int val) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->book_id = val;
+    newNode->next = top;
+    top = newNode;
+}
+
+int pop() {
+    if (top == NULL) {
+        printf("Stack Underflow\n");
+        return -1;
+    }
+    struct Node* temp = top;
+    int popped = temp->book_id;
+    top = top->next;
+    free(temp);
+    return popped;
+}
+
+void printStack() {
+    struct Node* temp = top;
+    printf("Pile from top to bottom: ");
+    while (temp != NULL) {
+        printf("%d ", temp->book_id);
+        temp = temp->next;
+    }
+    printf("\n");
+}
+
+int main() {
+    // Push four book numbers
+    push(101);
+    push(102);
+    push(103);
+    push(104);
+
+    // Pop one and print it
+    int poppedBook = pop();
+    printf("Popped book: %d\n", poppedBook);
+
+    // Print remaining pile from top to bottom
+    printStack();
+
+    return 0;
+}
